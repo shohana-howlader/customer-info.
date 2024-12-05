@@ -1,0 +1,166 @@
+﻿@model WebApplication1.Models.ViewModel.CustomerCreateViewModel
+
+@{
+    ViewData["Title"] = "Edit Customer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+  
+
+    <form asp-action="Edit" method="post" id="customerForm" class="needs-validation" novalidate>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="CustomerId" class="form-label">Customer ID</label>
+                <input type="text" class="form-control" id="CustomerId" name="CustomerId" value="@Model.CustomerId" readonly />
+            </div>
+            <div class="col-md-6">
+                <label for="Name" class="form-label">Name</label>
+                <input type="text" class="form-control" id="Name" name="Name" value="@Model.Name" required />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="CustomerTypeId" class="form-label">Customer Type</label>
+                <div class="input-group">
+                    <select asp-for="CustomerTypeId" asp-items="ViewBag.CustomerTypes" class="form-select" required>
+                        <option value="">Select</option>
+                    </select>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#addTypeModal">+</button>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label for="Address" class="form-label">Address</label>
+                <input type="text" class="form-control" id="Address" name="Address" value="@Model.Address" required />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="BusinessStartDate" class="form-label">Business Start Date</label>
+                <input type="date" class="form-control" id="BusinessStartDate" name="BusinessStartDate" value="@Model.BusinessStartDate.ToString("yyyy-MM-dd")" required />
+            </div>
+            <div class="col-md-6">
+                <label for="Phone" class="form-label">Phone</label>
+                <input type="text" class="form-control" id="Phone" name="Phone" value="@Model.Phone" required />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="CreditLimit" class="form-label">Credit Limit</label>
+                <input type="number" class="form-control" id="CreditLimit" name="CreditLimit" value="@Model.CreditLimit" step="0.01" required />
+            </div>
+        </div>
+
+        <section class="mb-4">
+            <h5 class="mb-3">Delivery Information</h5>
+            <div class="card border-secondary">
+                <div class="card-body" id="deliveryInfos">
+                    @for (var i = 0; i < Model.DeliveryInfos.Count; i++)
+                    {
+                        <div class="delivery-info mb-3 p-3 border rounded">
+                            <div class="row mb-2">
+                                <div class="col-md-4">
+                                    <label for="DeliveryInfos[@i].DeliveryAddress" class="form-label">Address</label>
+                                    <input type="text" class="form-control" name="DeliveryInfos[@i].DeliveryAddress" value="@Model.DeliveryInfos[i].DeliveryAddress" required />
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="DeliveryInfos[@i].ContactPerson" class="form-label">Contact Person</label>
+                                    <input type="text" class="form-control" name="DeliveryInfos[@i].ContactPerson" value="@Model.DeliveryInfos[i].ContactPerson" required />
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="DeliveryInfos[@i].Phone" class="form-label">Phone</label>
+                                    <input type="text" class="form-control" name="DeliveryInfos[@i].Phone" value="@Model.DeliveryInfos[i].Phone" required />
+                                </div>
+                            </div>
+                            <!-- Remove button -->
+                            <button type="button" class="btn btn-danger btn-sm" onclick="removeDeliveryInfo(this)">Remove</button>
+                        </div>
+                    }
+                </div>
+                <button type="button" class="btn btn-secondary mt-3" onclick="addDeliveryInfo()">Add Delivery Info</button>
+            </div>
+        </section>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a class="btn btn-secondary" asp-action="Index">Back to List</a>
+        </div>
+    </form>
+</div>
+
+<!-- Modal for Adding New Customer Type -->
+<div class="modal fade" id="addTypeModal" tabindex="-1" aria-labelledby="addTypeModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="background-color: #343a40;">
+        <div class="modal-content" style="background-color: #212529; color: white;">
+            <div class="modal-header" style="background-color: #343a40; color: white;">
+                <h5 class="modal-title" id="addTypeModalLabel">Add Customer Type</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addTypeForm">
+                    <div class="form-group">
+                        <label for="NewCustomerType" class="form-label" style="color: white;">Customer Type Name</label>
+                        <input type="text" class="form-control" id="NewCustomerType" required />
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3">Add</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Function to add new delivery info
+    function addDeliveryInfo() {
+        const index = document.querySelectorAll('#deliveryInfos .delivery-info').length;
+        const html = `
+                    <div class="delivery-info mb-3 p-3 border rounded">
+                        <div class="row mb-2">
+                            <div class="col-md-4">
+                                <label for="DeliveryInfos[${index}].DeliveryAddress" class="form-label">Address</label>
+                                <input type="text" class="form-control" name="DeliveryInfos[${index}].DeliveryAddress" required />
+                            </div>
+                            <div class="col-md-4">
+                                <label for="DeliveryInfos[${index}].ContactPerson" class="form-label">Contact Person</label>
+                                <input type="text" class="form-control" name="DeliveryInfos[${index}].ContactPerson" required />
+                            </div>
+                            <div class="col-md-4">
+                                <label for="DeliveryInfos[${index}].Phone" class="form-label">Phone</label>
+                                <input type="text" class="form-control" name="DeliveryInfos[${index}].Phone" required />
+                            </div>
+                        </div>
+                        <!-- Remove button -->
+                        <button type="button" class="btn btn-danger btn-sm" onclick="removeDeliveryInfo(this)">Remove</button>
+                    </div>
+                `;
+        document.getElementById('deliveryInfos').insertAdjacentHTML('beforeend', html);
+    }
+
+    // Function to remove delivery info
+    function removeDeliveryInfo(button) {
+        const deliveryInfoElement = button.closest('.delivery-info');
+        if (deliveryInfoElement) {
+            deliveryInfoElement.remove();
+        }
+    }
+
+    // Handle Add Customer Type
+    document.getElementById('addTypeForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const formData = new FormData();
+        formData.append("CustomerTypeName", document.getElementById('NewCustomerType').value);
+        fetch('@Url.Action("CreateCustomerType", "Customers")', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                const select = document.getElementById('CustomerTypeId');
+                select.innerHTML += `<option value="${data.customerTypeId}" selected>${data.customerTypeName}</option>`;
+                $('#addTypeModal').modal('hide');
+            });
+    });
+</script>

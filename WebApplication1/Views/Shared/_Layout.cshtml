@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Dashboard</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+        body {
+            background-color: #0b0e11;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .sidebar {
+            background-color: #1a1d23;
+            height: 100vh;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+        }
+
+            .sidebar .nav-link {
+                color: #c1c1c1;
+                margin-bottom: 1rem;
+                transition: color 0.2s ease;
+            }
+
+                .sidebar .nav-link:hover {
+                    color: #ffffff;
+                }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 2rem;
+        }
+
+        .card {
+            background-color: #1a1d23;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .highlight-card {
+            background: linear-gradient(145deg, #1a1d23, #2a2d33);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 0.5rem;
+            padding: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <a class="navbar-brand text-white mb-4" asp-area="" asp-controller="Home" asp-action="Index">CustomerInfo.</a>
+        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+        <a class="nav-link" asp-area="" asp-controller="Customers" asp-action="Index">Customers</a>
+    </div>
+    <div class="main-content">
+        <header class="d-flex justify-content-between align-items-center mb-4">
+            <h1>@ViewData["Title"]</h1>
+            <div>
+                <a href="https://www.linkedin.com/in/shohana-howlader" style="text-decoration: none" >
+                <img src="/image/shohana.jpg" class="rounded-circle" alt="User" height="50" />
+                <span class="ms-2">
+                    Shohana
+                </span>
+                </a>
+            </div>
+        </header>
+        <main role="main">
+            @RenderBody()
+        </main>
+    </div>
+    @RenderSection("Scripts", required: false)
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

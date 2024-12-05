@@ -1,0 +1,54 @@
+﻿@model WebApplication1.Models.Customer
+
+@{
+    ViewData["Title"] = "Customer Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4 text-center">@ViewData["Title"]</h2>
+
+    <div class="card border-secondary mb-4">
+        <div class="card-header bg-secondary text-white">
+            Customer Information
+        </div>
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-4">Customer ID</dt>
+                <dd class="col-sm-8">@Model.CustomerId</dd>
+
+                <dt class="col-sm-4">Name</dt>
+                <dd class="col-sm-8">@Model.Name</dd>
+
+                <dt class="col-sm-4">Address</dt>
+                <dd class="col-sm-8">@Model.Address</dd>
+
+                <dt class="col-sm-4">Phone</dt>
+                <dd class="col-sm-8">@Model.Phone</dd>
+
+                <dt class="col-sm-4">Customer Type</dt>
+                <dd class="col-sm-8">@Model.CustomerType?.CustomerTypeName</dd>
+            </dl>
+
+            <h3>Delivery Information</h3>
+            @foreach (var item in Model.DeliveryInfoList)
+            {
+                <dl class="row">
+                    <dt class="col-sm-3">Delivery Address</dt>
+                    <dd class="col-sm-9">@item.DeliveryAddress</dd>
+
+                    <dt class="col-sm-3">ContactPerson </dt>
+                    <dd class="col-sm-9">@item.ContactPerson</dd>
+
+                    <dt class="col-sm-3">Phone</dt>
+                    <dd class="col-sm-9">@item.Phone</dd>
+                </dl>
+            }
+           
+        </div>
+    </div>
+
+    <div class="text-center">
+        <a href="@Url.Action("Index", "Customers")" class="btn btn-secondary">Back to List</a>
+    </div>
+</div>
